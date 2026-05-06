@@ -1,0 +1,5 @@
+# Looper worktrees
+.worktrees/
+
+# Looper session artifacts
+.looper/sessions/

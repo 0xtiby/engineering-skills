@@ -1,0 +1,15 @@
+{
+  "cli": "claude",
+  "model": "default",
+  "maxIterations": 20,
+  "sentinel": ":::LOOPER_DONE:::",
+  "vars": {
+    "BASE_BRANCH": "{{BASE_BRANCH}}",
+    "PACKAGE_MANAGER": "{{PACKAGE_MANAGER}}",
+    "INSTALL_CMD": "{{INSTALL_CMD}}",
+    "BUILD_CMD": "{{BUILD_CMD}}",
+    "LINT_CMD": "{{LINT_CMD}}",
+    "TEST_CMD": "{{TEST_CMD}}",
+    "TYPECHECK_CMD": "{{TYPECHECK_CMD}}"
+  }
+}
