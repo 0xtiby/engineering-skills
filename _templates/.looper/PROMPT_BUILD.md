@@ -75,7 +75,7 @@ Decision tree:
 1. Read the chosen sub-issue: `gh issue view <number> --json title,body`
 2. Read the parent PRD: `gh issue view {{PRD_ISSUE}} --json title,body`
 3. Read `AGENTS.md` (or `CLAUDE.md`) for architecture, conventions, and commands.
-4. Read `CONTEXT.md` for domain language. Use its terms in test names and identifiers.
+4. Read `docs/CONTEXT.md` for domain language. Use its terms in test names and identifiers.
 5. Read `CODING_STANDARDS.md` (sections: TDD, Tests, Mocking) for the rules to apply in Phase 3.
 6. Find an existing test file in the area you're touching — follow its patterns.
 7. Explore the codebase enough to confirm the behavior doesn't already exist and to understand neighboring patterns.
@@ -121,7 +121,7 @@ git commit -m "$(cat <<'EOF'
 feat(prd-{{PRD_ISSUE}}): <sub-issue title>
 
 <2–3 sentence prose paragraph describing the capability that was added or
-changed, in domain terms (use CONTEXT.md vocabulary). Wrap at ~72 columns.
+changed, in domain terms (use docs/CONTEXT.md vocabulary). Wrap at ~72 columns.
 Describe the user-visible behavior, not the implementation.>
 
 Key changes:
@@ -162,7 +162,7 @@ gh issue list --search "in:body \"Parent\" \"#{{PRD_ISSUE}}\"" --state closed --
 git log origin/{{BASE_BRANCH}}..HEAD --pretty=format:"- %s%n%b"
 ```
 
-Compose a PR body that summarizes the **whole** PRD's work — not just the last sub-issue. Use the template below. Use `CONTEXT.md` vocabulary throughout.
+Compose a PR body that summarizes the **whole** PRD's work — not just the last sub-issue. Use the template below. Use `docs/CONTEXT.md` vocabulary throughout.
 
 ```bash
 gh pr create \
@@ -212,5 +212,5 @@ Emit `:::LOOPER_DONE:::`.
 4. **Worktree first** — all work happens inside `.worktrees/feat/prd-{{PRD_ISSUE}}`.
 5. **Body-ref + label discovery** — `## Parent` heading + `ready-for-agent` label, no native sub-issue API.
 6. **No PRD mutation** — never edit or close the PRD issue.
-7. **No HITL skills** — read `CODING_STANDARDS.md`, `CONTEXT.md`, `AGENTS.md` directly.
+7. **No HITL skills** — read `CODING_STANDARDS.md`, `docs/CONTEXT.md`, `AGENTS.md` directly.
 8. **Use `run_silent`** — wrap every validation command.

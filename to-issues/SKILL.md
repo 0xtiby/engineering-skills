@@ -15,7 +15,7 @@ Work from whatever is already in the conversation context. If the user passes an
 
 ### 2. Explore the codebase (optional)
 
-If you haven't already explored the codebase, do so. Use `CONTEXT.md` vocabulary in titles and descriptions. Respect ADRs in the area you're touching.
+If you haven't already explored the codebase, do so. Use `docs/CONTEXT.md` vocabulary in titles and descriptions. Respect ADRs in the area you're touching.
 
 ### 3. Draft vertical slices
 

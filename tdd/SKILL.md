@@ -38,7 +38,7 @@ RIGHT (vertical):
 
 ### 1. Planning
 
-Use the project's `CONTEXT.md` glossary so test names and interface vocabulary match the project's language. Respect ADRs in the area you're touching.
+Use the project's `docs/CONTEXT.md` glossary so test names and interface vocabulary match the project's language. Respect ADRs in the area you're touching.
 
 Before writing any code:
 

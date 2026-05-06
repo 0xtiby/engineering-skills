@@ -9,7 +9,7 @@ Take the current conversation context and codebase understanding and produce a P
 
 ## Process
 
-1. Explore the repo to understand the current state of the codebase, if you haven't already. Use `CONTEXT.md` vocabulary throughout the PRD. Respect ADRs in the area you're touching.
+1. Explore the repo to understand the current state of the codebase, if you haven't already. Use `docs/CONTEXT.md` vocabulary throughout the PRD. Respect ADRs in the area you're touching.
 
 2. Sketch out the major modules you will need to build or modify. Actively look for opportunities to extract deep modules — small testable interfaces with rich implementations behind them.
 
