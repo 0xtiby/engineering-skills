@@ -15,7 +15,11 @@ Take the current conversation context and codebase understanding and produce a P
 
    Check with the user that these modules match their expectations. Check which modules they want tests written for.
 
-3. Write the PRD using the template below. Publish it with `gh issue create`. Apply the **`ready-for-agent`** label directly (the conversation context that produced the PRD constitutes evaluation; `/triage` is for externally-sourced issues).
+3. Write the PRD using the template below. Publish it with `gh issue create`. Apply two labels:
+   - **`prd`** — marks the issue as a parent PRD (distinct from sub-issues, bug reports, enhancements). Used by tooling and humans to filter the issue list down to PRDs.
+   - **`ready-for-agent`** — the conversation context that produced the PRD constitutes evaluation; `/triage` is for externally-sourced issues, so the PRD skips it.
+
+   If the `prd` label does not exist on the repo yet, create it first: `gh label create prd --description "Parent PRD issue (broken into sub-issues by /to-issues)" --color 0E8A16`.
 
 <prd-template>
 

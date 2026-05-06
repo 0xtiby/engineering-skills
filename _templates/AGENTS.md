@@ -41,7 +41,10 @@ ADRs live under `docs/adr/NNNN-*.md`. Template at `docs/adr/0000-template.md`.
 
 ### Issue tracker
 
-GitHub Issues. Triage labels: `bug`, `enhancement`, `needs-triage`, `needs-info`, `ready-for-agent`, `ready-for-human`, `wontfix`.
+GitHub Issues. Label vocabulary:
+- Category: `bug`, `enhancement`.
+- State: `needs-triage`, `needs-info`, `ready-for-agent`, `ready-for-human`, `wontfix`.
+- Type marker: `prd` (parent PRD issues, applied by `/to-prd`).
 
 ### AFK loop
 
