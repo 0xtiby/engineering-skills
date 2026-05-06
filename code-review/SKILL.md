@@ -11,10 +11,10 @@ Review a pull request against the project's review doctrine and post the review 
 
 Read the doctrine **before reading the diff**:
 
-- If the target repo has a `CODE_REVIEW.md` at its root, read that. It is the canonical reviewer checklist for this project (philosophy, doctrine alignment rules, language-specific standards, output format).
+- If the target repo has a `docs/CODE_REVIEW.md` (or legacy `CODE_REVIEW.md` at the root), read that. It is the canonical reviewer checklist for this project (philosophy, doctrine alignment rules, language-specific standards, output format).
 - Otherwise, fall back to the bundled [CODE_REVIEW.md](./CODE_REVIEW.md) shipped with this skill.
 
-Also read, if present, the repo's `CODING_STANDARDS.md`, `CONTEXT.md`, `AGENTS.md`, and `docs/adr/`. The PR must be evaluated against repo doctrine, not just generic principles.
+Also read, if present, the repo's `CODING_STANDARDS.md` (root), `docs/CONTEXT.md`, `AGENTS.md`, and `docs/adr/`. The PR must be evaluated against repo doctrine, not just generic principles.
 
 ## Usage
 
@@ -39,7 +39,7 @@ If no URL is provided, ask the user for one.
 
 4. **Review.** Apply the process and standards from the loaded `CODE_REVIEW.md`:
    - Initial assessment (red flags).
-   - Doctrine alignment (against `CODING_STANDARDS.md`, `CONTEXT.md`, ADRs, `AGENTS.md`).
+   - Doctrine alignment (against `CODING_STANDARDS.md`, `docs/CONTEXT.md`, ADRs, `AGENTS.md`).
    - Deep analysis (Convention over Configuration, Programmer Happiness, Conceptual Compression).
    - Craftsmanship test.
 

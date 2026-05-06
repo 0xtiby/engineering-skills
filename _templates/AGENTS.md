@@ -29,11 +29,11 @@ Engineering doctrine (TDD, tests, mocking, interface design, deep modules) lives
 
 ### Code review
 
-Reviewer doctrine lives in `CODE_REVIEW.md`. The `/code-review` skill reads it before reviewing a PR.
+Reviewer doctrine lives in `docs/CODE_REVIEW.md`. The `/code-review` skill reads it before reviewing a PR.
 
 ### Domain
 
-Shared domain language: `CONTEXT.md`. Maintained via `/grill-with-docs`.
+Shared domain language: `docs/CONTEXT.md`. Maintained via `/grill-with-docs`.
 
 ### Architectural decisions
 

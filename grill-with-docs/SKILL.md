@@ -1,6 +1,6 @@
 ---
 name: grill-with-docs
-description: Grilling session that challenges your plan against the existing domain model, sharpens terminology, and updates documentation (CONTEXT.md, ADRs) inline as decisions crystallise. Use when user wants to stress-test a plan against their project's language and documented decisions.
+description: Grilling session that challenges your plan against the existing domain model, sharpens terminology, and updates documentation (docs/CONTEXT.md, ADRs) inline as decisions crystallise. Use when user wants to stress-test a plan against their project's language and documented decisions.
 ---
 
 <what-to-do>
@@ -17,25 +17,25 @@ If a question can be answered by exploring the codebase, explore the codebase in
 
 ## Domain awareness
 
-This skill assumes a single-context layout: one `CONTEXT.md` at the repo root and ADRs under `docs/adr/`. Multi-context layouts are not supported.
+This skill assumes a single-context layout: one `docs/CONTEXT.md` and ADRs under `docs/adr/`. Multi-context layouts are not supported.
 
 ```
 /
-├── CONTEXT.md
 ├── docs/
+│   ├── CONTEXT.md
 │   └── adr/
 │       ├── 0001-event-sourced-orders.md
 │       └── 0002-postgres-for-write-model.md
 └── src/
 ```
 
-If `CONTEXT.md` doesn't exist, create it on first resolved term. If `docs/adr/` doesn't exist, create it when you write the first ADR. The harness scaffolded by `/setup-harness` already creates both as empty templates — fill them, don't recreate them.
+If `docs/CONTEXT.md` doesn't exist, create it on first resolved term. If `docs/adr/` doesn't exist, create it when you write the first ADR. The harness scaffolded by `/setup-harness` already creates both as empty templates — fill them, don't recreate them.
 
 ## During the session
 
 ### Challenge against the glossary
 
-When the user uses a term that conflicts with the existing language in `CONTEXT.md`, call it out immediately. "Your glossary defines 'cancellation' as X, but you seem to mean Y — which is it?"
+When the user uses a term that conflicts with the existing language in `docs/CONTEXT.md`, call it out immediately. "Your glossary defines 'cancellation' as X, but you seem to mean Y — which is it?"
 
 ### Sharpen fuzzy language
 
@@ -51,9 +51,9 @@ When the user states how something works, check whether the code agrees. If you 
 
 ### Update CONTEXT.md inline
 
-When a term is resolved, update `CONTEXT.md` right there. Don't batch these up — capture them as they happen. Use the format in [CONTEXT-FORMAT.md](./CONTEXT-FORMAT.md).
+When a term is resolved, update `docs/CONTEXT.md` right there. Don't batch these up — capture them as they happen. Use the format in [CONTEXT-FORMAT.md](./CONTEXT-FORMAT.md).
 
-Don't couple `CONTEXT.md` to implementation details. Only include terms that are meaningful to domain experts.
+Don't couple `docs/CONTEXT.md` to implementation details. Only include terms that are meaningful to domain experts.
 
 ### Offer ADRs sparingly
 

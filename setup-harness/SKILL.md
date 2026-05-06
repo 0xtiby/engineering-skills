@@ -1,12 +1,12 @@
 ---
 name: setup-harness
-description: Bootstrap the personal project harness in a fresh git repo. Writes the per-repo doc set (CONTEXT.md, CODING_STANDARDS.md, AGENTS.md, docs/adr/) and the looper build prompt (.looper/PROMPT_BUILD.md). Run once after `/repo-create`. Re-running edits in place. Use when user wants to set up the harness, configure looper for a new repo, or scaffold AGENTS/CODING_STANDARDS files.
+description: Bootstrap the personal project harness in a fresh git repo. Writes the per-repo doc set (CODING_STANDARDS.md, AGENTS.md at root; CONTEXT.md, CODE_REVIEW.md and ADRs under docs/) and the looper build prompt (.looper/PROMPT_BUILD.md). Run once after `/repo-create`. Re-running edits in place. Use when user wants to set up the harness, configure looper for a new repo, or scaffold AGENTS/CODING_STANDARDS files.
 disable-model-invocation: true
 ---
 
 # Setup Harness
 
-Bootstraps the project harness: per-repo doc set (`CONTEXT.md`, `CODING_STANDARDS.md`, `AGENTS.md`, `docs/adr/`) plus the looper build prompt (`.looper/PROMPT_BUILD.md`). Generic only — stack-specific layers are applied by hand to template repos (eniem, future boilerplates).
+Bootstraps the project harness: per-repo doc set (`CODING_STANDARDS.md` and `AGENTS.md` at the repo root; `docs/CONTEXT.md`, `docs/CODE_REVIEW.md`, `docs/adr/`) plus the looper build prompt (`.looper/PROMPT_BUILD.md`). Generic only — stack-specific layers are applied by hand to template repos (eniem, future boilerplates).
 
 ## Process
 
@@ -16,7 +16,7 @@ Look at the current repo to understand its starting state. Don't assume; read wh
 
 - `git remote -v` — confirm GitHub remote (this skill is GitHub-only).
 - `AGENTS.md`, `CLAUDE.md` at the repo root — does either exist?
-- `CONTEXT.md`, `CODING_STANDARDS.md`, `docs/adr/`, `.looper/`, `scripts/run_silent`, `prek.toml` — present already?
+- `CODING_STANDARDS.md`, `docs/CONTEXT.md`, `docs/CODE_REVIEW.md`, `docs/adr/`, `.looper/`, `scripts/run_silent`, `prek.toml` — present already?
 - `package.json` — infer package manager (`packageManager` field) and Node version (`engines.node`).
 
 If a non-GitHub remote is detected, stop and tell the user this skill is GitHub-only.
@@ -104,9 +104,9 @@ If you find a `{{...}}` placeholder that isn't in either list, stop and ask — 
 
 Write order:
 
-1. `CONTEXT.md` (skip if non-empty exists).
+1. `docs/CONTEXT.md` (skip if non-empty exists).
 2. `CODING_STANDARDS.md` (skip if non-empty exists).
-3. `CODE_REVIEW.md` (skip if non-empty exists).
+3. `docs/CODE_REVIEW.md` (skip if non-empty exists).
 4. `AGENTS.md` (or edit existing — see file selection rule below).
 5. `docs/adr/0000-template.md` (skip if exists).
 6. `.looper/config.json` (skip if exists; offer to merge `vars`).
@@ -129,7 +129,7 @@ Invoke `/repo-setup-ci`, then `/repo-branch-protection`. These are existing meta
 ### 7. Done
 
 Tell the user setup is complete. Mention:
-- `/grill-with-docs` to start populating `CONTEXT.md` and ADRs.
+- `/grill-with-docs` to start populating `docs/CONTEXT.md` and ADRs.
 - `/to-prd` then `/to-issues` to produce a PRD and ready sub-issues.
 - `looper run --prompt .looper/PROMPT_BUILD.md --var PRD_ISSUE=<n>` to start the AFK loop.
 
@@ -143,9 +143,10 @@ The file templates this skill writes live in `_templates/` adjacent to this skil
 setup-harness/
 ├── SKILL.md                    ← this file
 └── templates/                  ← symlinked or copied from tiby-skills/_templates/
-    ├── CONTEXT.md
     ├── CODING_STANDARDS.md
     ├── AGENTS.md
+    ├── docs/CONTEXT.md
+    ├── docs/CODE_REVIEW.md
     ├── docs/adr/0000-template.md
     ├── .looper/config.json
     ├── .looper/PROMPT_BUILD.md
