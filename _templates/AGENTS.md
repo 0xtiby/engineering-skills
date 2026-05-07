@@ -43,8 +43,16 @@ ADRs live under `docs/adr/NNNN-*.md`. Template at `docs/adr/0000-template.md`.
 
 GitHub Issues. Label vocabulary:
 - Category: `bug`, `enhancement`.
-- State: `needs-triage`, `needs-info`, `ready-for-agent`, `ready-for-human`, `wontfix`.
+- Issue state: `needs-triage`, `needs-info`, `ready-for-agent`, `ready-for-human`, `wontfix`.
 - Type marker: `prd` (parent PRD issues, applied by `/to-prd`).
+- PR status: `needs-review`, `changes-requested`, `ready-to-merge`.
+
+PR status labels are shared GitHub labels, but represent pull request review state only:
+- `needs-review` — PR is open and ready for review.
+- `changes-requested` — review found required changes.
+- `ready-to-merge` — review accepted the PR and it can be merged.
+
+Keep exactly one PR status label on each open PR. Maintainers and agents can filter pull requests by these labels in GitHub or with `gh pr list --search "label:<label>"`.
 
 ### AFK loop
 

@@ -45,7 +45,12 @@ If no URL is provided, ask the user for one.
 
 5. **Format the review** using the **Output Format** section of `CODE_REVIEW.md` (Overall Assessment / Critical Issues / Improvements Needed / What Works Well / Refactored Version).
 
-6. **Post the review** as a PR comment:
+6. **Choose the PR status label.** GitHub labels are shared between issues and PRs, but these labels represent PR review state only. Keep only one active on the PR:
+   - Use `changes-requested` if the review has any Critical Issues or required Improvements Needed before merge.
+   - Use `ready-to-merge` only when the review accepts the PR as merge-ready.
+   - Remove `needs-review` after review either way.
+
+7. **Post the review** as a PR comment:
    ```bash
    gh pr comment <PR_URL> --body "$(cat <<'EOF'
    <review body>
@@ -53,7 +58,20 @@ If no URL is provided, ask the user for one.
    )"
    ```
 
-7. **Confirm to the user** that the review was posted, and print the review body to the local log so they can read it without opening GitHub.
+8. **Update the PR status label** after posting the review:
+   ```bash
+   gh label create needs-review --repo <owner/repo> --description "PR status: ready and waiting for review" --color 5319E7 2>/dev/null || true
+   gh label create changes-requested --repo <owner/repo> --description "PR status: reviewed and requires changes before merge" --color D73A4A 2>/dev/null || true
+   gh label create ready-to-merge --repo <owner/repo> --description "PR status: reviewed and ready to merge" --color 0E8A16 2>/dev/null || true
+
+   # If changes are required:
+   gh pr edit <PR_URL> --remove-label needs-review --remove-label ready-to-merge --add-label changes-requested
+
+   # If accepted:
+   gh pr edit <PR_URL> --remove-label needs-review --remove-label changes-requested --add-label ready-to-merge
+   ```
+
+9. **Confirm to the user** that the review was posted and which PR status label was applied, then print the review body to the local log so they can read it without opening GitHub.
 
 ## Guardrails
 

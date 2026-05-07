@@ -22,7 +22,8 @@ Example: `/fix-code-review https://github.com/owner/repo/pull/42`
 5. **Apply fixes**: Make the code changes
 6. **Validate**: Run the project's validation commands to ensure fixes don't break anything
 7. **Commit & push**: Commit the fixes and push to the PR's head branch
-8. **Summarize**: Show what was fixed
+8. **Move PR back to review**: Apply `needs-review` and remove the other PR status labels
+9. **Summarize**: Show what was fixed
 
 ## Step 1: Discover PR Branch and Worktree
 
@@ -137,7 +138,22 @@ EOF
 git push origin HEAD
 ```
 
-## Step 7: Summarize
+## Step 7: Move PR Back to Review
+
+GitHub labels are shared between issues and PRs, but these labels represent PR review state only. After pushing fixes, keep only `needs-review` active so maintainers can filter PRs waiting for another review:
+
+```bash
+gh label create needs-review --repo <owner/repo> --description "PR status: ready and waiting for review" --color 5319E7 2>/dev/null || true
+gh label create changes-requested --repo <owner/repo> --description "PR status: reviewed and requires changes before merge" --color D73A4A 2>/dev/null || true
+gh label create ready-to-merge --repo <owner/repo> --description "PR status: reviewed and ready to merge" --color 0E8A16 2>/dev/null || true
+
+gh pr edit <pr-number> --repo <owner/repo> \
+  --remove-label changes-requested \
+  --remove-label ready-to-merge \
+  --add-label needs-review
+```
+
+## Step 8: Summarize
 
 ```
 ## Summary
@@ -149,6 +165,7 @@ Fixed 3/3 review comments:
 
 Validation: ✅ Build passed, ✅ Lint passed, ✅ Tests passed
 Pushed: <commit-sha> to <branch>
+PR status: `needs-review`
 ```
 
 ## Guardrails
