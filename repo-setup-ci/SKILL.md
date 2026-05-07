@@ -21,7 +21,7 @@ Ask each question in order. Skip any answered in the user's initial message.
    - **Release** — runs `semantic-release` on every push to `main`. Publishes to npm via OIDC trusted publishing.
    - At least one must be selected.
 
-2. **Package manager** — *"pnpm, npm, or yarn?"* Default: **pnpm**. (Templates are pnpm-based; if npm/yarn, swap the install/run commands and remove the `pnpm/action-setup` step.)
+2. **Package manager** — *"pnpm, npm, or yarn?"* Default: **pnpm**. (Templates are pnpm-based and pin pnpm `9.15.0` in `pnpm/action-setup` so generated workflows work even when `package.json` has no `packageManager` field; if npm/yarn, swap the install/run commands and remove the whole `pnpm/action-setup` step including its `with:` block.)
 
 3. **Node version** — Default: **22.14.0** (matches looper). Confirm or override.
 
@@ -37,8 +37,8 @@ For each selected workflow:
 2. Copy `<SKILL_DIR>/templates/<name>.yml` → `.github/workflows/<name>.yml`.
 3. If the user changed Node version or package manager, edit the copied file in place:
    - Node version → replace `node-version: 22.14.0`.
-   - npm → replace the `pnpm/action-setup` step with nothing, swap `pnpm install --frozen-lockfile` → `npm ci`, swap `pnpm <script>` → `npm run <script>`, swap `cache: pnpm` → `cache: npm`.
-   - yarn → equivalent swap with `yarn install --frozen-lockfile` and `yarn <script>`, `cache: yarn`.
+   - npm → replace the whole `pnpm/action-setup` step (including `with: version: 9.15.0`) with nothing, swap `pnpm install --frozen-lockfile` → `npm ci`, swap `pnpm <script>` → `npm run <script>`, swap `cache: pnpm` → `cache: npm`.
+   - yarn → replace the whole `pnpm/action-setup` step (including `with: version: 9.15.0`) with nothing, then swap to `yarn install --frozen-lockfile` and `yarn <script>`, `cache: yarn`.
 
 Do **not** commit. Leave the new files in the working tree.
 
@@ -57,6 +57,7 @@ Summarize:
 
 ## Notes
 
+- The pnpm templates intentionally specify `version: 9.15.0` on `pnpm/action-setup@v4` instead of relying on a target repo `packageManager` field.
 - This skill runs **once on a fresh repo**. For modifying CI on existing repos, edit the workflow files directly — do not rerun this skill, as it overwrites without merging.
 - If `.github/workflows/<name>.yml` already exists, **stop and ask** — do not overwrite silently.
 - Do not invent additional workflows (deploy, codeql, dependabot, etc.). Stay scoped to test + release.
