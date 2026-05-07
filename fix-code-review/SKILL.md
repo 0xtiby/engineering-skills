@@ -155,7 +155,10 @@ gh pr edit <pr-number> --repo <owner/repo> \
 
 ## Step 8: Summarize
 
-```
+Post the summary as a new PR comment, then print the same summary locally:
+
+```bash
+gh pr comment <pr-number> --repo <owner/repo> --body "$(cat <<'EOF'
 ## Summary
 
 Fixed 3/3 review comments:
@@ -166,6 +169,8 @@ Fixed 3/3 review comments:
 Validation: ✅ Build passed, ✅ Lint passed, ✅ Tests passed
 Pushed: <commit-sha> to <branch>
 PR status: `needs-review`
+EOF
+)"
 ```
 
 ## Guardrails

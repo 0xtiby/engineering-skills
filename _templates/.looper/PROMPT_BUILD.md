@@ -164,21 +164,7 @@ git log origin/{{BASE_BRANCH}}..HEAD --pretty=format:"- %s%n%b"
 
 Compose a PR body that summarizes the **whole** PRD's work — not just the last sub-issue. Use `docs/CONTEXT.md` vocabulary throughout.
 
-Before opening the PR, ensure the PR status labels exist. GitHub labels are shared between issues and PRs, but these three represent PR review state only:
-
-```bash
-gh label create needs-review \
-  --description "PR status: ready and waiting for review" \
-  --color 5319E7 2>/dev/null || true
-gh label create changes-requested \
-  --description "PR status: reviewed and requires changes before merge" \
-  --color D73A4A 2>/dev/null || true
-gh label create ready-to-merge \
-  --description "PR status: reviewed and ready to merge" \
-  --color 0E8A16 2>/dev/null || true
-```
-
-Create the PR with `needs-review` so maintainers can filter pull requests that are waiting for review. Keep only one PR status label active on a PR at a time.
+Create the PR with `needs-review` so maintainers can filter pull requests that are waiting for review. `/setup-harness` provisions the PR status labels for the repository. Keep only one PR status label active on a PR at a time.
 
 ```bash
 PR_URL=$(gh pr create \
