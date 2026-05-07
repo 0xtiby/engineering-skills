@@ -114,6 +114,15 @@ Write order:
 8. `scripts/run_silent` (chmod +x). Skip if exists.
 9. `prek.toml` (only if Q5 = yes; skip if exists).
 10. `.gitignore` — read `_templates/.gitignore.fragment` and append **only the lines** that aren't already present in the repo's `.gitignore` (per-line dedup, ignoring comments and blank lines as the matching key). Don't append the fragment as a whole if any of its lines are missing — diff line-by-line. If `.gitignore` doesn't exist, create it with the full fragment.
+11. GitHub PR status labels — create or update the repository labels used by the PR lifecycle. GitHub labels are shared between issues and PRs, but these three represent PR review state only:
+    ```bash
+    gh label create needs-review --description "PR status: ready and waiting for review" --color 5319E7 2>/dev/null \
+      || gh label edit needs-review --description "PR status: ready and waiting for review" --color 5319E7
+    gh label create changes-requested --description "PR status: reviewed and requires changes before merge" --color D73A4A 2>/dev/null \
+      || gh label edit changes-requested --description "PR status: reviewed and requires changes before merge" --color D73A4A
+    gh label create ready-to-merge --description "PR status: reviewed and ready to merge" --color 0E8A16 2>/dev/null \
+      || gh label edit ready-to-merge --description "PR status: reviewed and ready to merge" --color 0E8A16
+    ```
 
 **File selection rule for AGENTS.md / CLAUDE.md:**
 - If `CLAUDE.md` exists, edit it (in-place, preserve user content).

@@ -191,11 +191,14 @@ gh issue list --search "in:body \"Parent\" \"#$PRD_ISSUE_NUMBER\"" --state close
 git log origin/{{BASE_BRANCH}}..HEAD --pretty=format:"- %s%n%b"
 ```
 
-Compose a PR body that summarizes the **whole** PRD's work — not just the last sub-issue. Use the template below. Use `docs/CONTEXT.md` vocabulary throughout.
+Compose a PR body that summarizes the **whole** PRD's work — not just the last sub-issue. Use `docs/CONTEXT.md` vocabulary throughout.
+
+Create the PR with `needs-review` so maintainers can filter pull requests that are waiting for review. `/setup-harness` provisions the PR status labels for the repository. Keep only one PR status label active on a PR at a time.
 
 ```bash
-gh pr create \
+PR_URL=$(gh pr create \
   --base {{BASE_BRANCH}} \
+  --label needs-review \
   --title "feat: <PRD title>" \
   --body "$(cat <<EOF
 ## Summary
@@ -226,7 +229,12 @@ Group by area/module, not by commit:
 
 <Anything reviewers should pay extra attention to: tricky tradeoffs, follow-ups intentionally deferred, schema/migration impact, breaking changes. Omit if nothing applies.>
 EOF
-)"
+)")
+
+gh pr edit "$PR_URL" \
+  --remove-label changes-requested \
+  --remove-label ready-to-merge \
+  --add-label needs-review
 ```
 
 Emit `:::LOOPER_DONE:::`.
