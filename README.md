@@ -14,9 +14,9 @@ Three structural differences:
 
 1. **AFK runtime is `looper`, not `sandcastle`.** Matt pairs his skills with [`mattpocock/sandcastle`](https://github.com/mattpocock/sandcastle), a containerized RALPH loop. I use [`@0xtiby/looper`](https://github.com/0xtiby/looper), which is stateless, CLI-agnostic (claude / codex / opencode / pi), and driven by a prompt file + sentinel (`:::LOOPER_DONE:::`). The AFK build prompt is therefore a **looper template** (`.looper/PROMPT_BUILD.md`), not a sandcastle prompt.
 
-2. **Per-repo doctrine files: `CODING_STANDARDS.md` + `CODE_REVIEW.md`.** Matt's `tdd` skill ships engineering rules as sidecars (tests, mocking, deep modules, …); his code-reviewer is a Claude sub-agent (Claude Code only). I unify both into per-repo files: `/setup-harness` writes `CODING_STANDARDS.md` (writer doctrine — TDD, tests, mocking, interface design, deep modules) and `CODE_REVIEW.md` (reviewer doctrine — checklist, standards, output format) into every repo. The `/tdd` and `/code-review` skills read those files; the looper build prompt reads `CODING_STANDARDS.md` directly. **Single source of doctrine, multiple delivery surfaces.**
+2. **Per-repo doctrine files: `CODING_STANDARDS.md` + `docs/CODE_REVIEW.md`.** Matt's `tdd` skill ships engineering rules as sidecars (tests, mocking, deep modules, …); his code-reviewer is a Claude sub-agent (Claude Code only). I unify both into per-repo files: `/setup-harness` writes `CODING_STANDARDS.md` (writer doctrine — TDD, tests, mocking, interface design, deep modules) and `docs/CODE_REVIEW.md` (reviewer doctrine — checklist, standards, output format) into every repo. The `/tdd` and `/code-review` skills read those files; the looper build prompt reads `CODING_STANDARDS.md` directly. **Single source of doctrine, multiple delivery surfaces.**
 
-3. **Self-constructing harness via `/setup-harness`.** Matt's `setup-matt-pocock-skills` writes `docs/agents/{issue-tracker,triage-labels,domain}.md` so other skills know the repo's conventions. My equivalent writes the full per-repo bootstrap in one go: `CONTEXT.md`, `CODING_STANDARDS.md`, `AGENTS.md` (with a `## Agent skills` block), `docs/adr/`, `.looper/{config.json,PROMPT_BUILD.md}`, `scripts/run_silent`, optional `prek.toml`. Hardcoded to GitHub + a single context layout — no pluggability, lower interview surface.
+3. **Self-constructing harness via `/setup-harness`.** Matt's `setup-matt-pocock-skills` writes `docs/agents/{issue-tracker,triage-labels,domain}.md` so other skills know the repo's conventions. My equivalent writes the full per-repo bootstrap in one go: `docs/CONTEXT.md`, `CODING_STANDARDS.md`, `docs/CODE_REVIEW.md`, `AGENTS.md` (with a `## Agent skills` block), `docs/adr/`, `.looper/{config.json,PROMPT_BUILD.md}`, `scripts/{run_silent,ensure_pr_status_labels}`, optional `prek.toml`. Hardcoded to GitHub + a single context layout — no pluggability, lower interview surface.
 
 A handful of smaller divergences: GitHub-only (no GitLab / local-markdown branching), `/to-prd` and `/to-issues` apply `ready-for-agent` directly (skip `needs-triage`), `## Parent` heading kept verbatim from Matt's `to-issues` template.
 
@@ -37,7 +37,7 @@ A handful of smaller divergences: GitHub-only (no GitLab / local-markdown branch
                      │
                      ▼
             ┌──────────────────┐
-            │ /grill-with-docs │  populate CONTEXT.md + ADRs
+            │ /grill-with-docs │  populate docs/CONTEXT.md + ADRs
             └────────┬─────────┘
                      ▼
             ┌──────────────────┐
@@ -58,7 +58,7 @@ A handful of smaller divergences: GitHub-only (no GitLab / local-markdown branch
             │    .looper/PROMPT_BUILD.md           │
             │    --var PRD_ISSUE=<n>               │
             │                                      │
-            │  reads CONTEXT.md, AGENTS.md,        │
+            │  reads docs/CONTEXT.md, AGENTS.md,   │
             │  CODING_STANDARDS.md directly        │
             │  → TDD → 4-validator gate → commit   │
             │  → close → repeat → PR               │
@@ -68,7 +68,7 @@ A handful of smaller divergences: GitHub-only (no GitLab / local-markdown branch
 Side-channels:
 
 - `/triage` — externally-sourced issues (bug reports, contributor enhancements). Outputs of `/to-prd` and `/to-issues` skip it.
-- `/code-review` and `/fix-code-review` — run on the PR opened by looper (or any PR). The reviewer reads `CODE_REVIEW.md` + `CODING_STANDARDS.md`; the fixer fetches review comments, applies them, validates, commits, and pushes — no manual gate.
+- `/code-review` and `/fix-code-review` — run on the PR opened by looper (or any PR). The reviewer reads `docs/CODE_REVIEW.md` + `CODING_STANDARDS.md`; the fixer fetches review comments, applies them, validates, commits, and pushes — no manual gate.
 - `/diagnose`, `/zoom-out`, `/improve-codebase-architecture`, `/grill-me`, `/tdd` — interactive engineering helpers. Invoked ad-hoc, not part of the linear flow.
 - `/write-a-skill` — used while authoring this very directory.
 
@@ -81,14 +81,14 @@ Side-channels:
 | `repo-create` | Create a new GitHub repository interactively. |
 | `repo-setup-ci` | Install GitHub Actions workflows (test on PR, semantic-release on main) on a fresh repo. |
 | `repo-branch-protection` | Apply branch protection rules (required reviews, status checks, force-push blocking) to a repo's default branch. |
-| `setup-harness` | Bootstrap the per-repo harness — `CONTEXT.md`, `CODING_STANDARDS.md`, `CODE_REVIEW.md`, `AGENTS.md`, `docs/adr/`, `.looper/PROMPT_BUILD.md`, optional `prek.toml`. |
+| `setup-harness` | Bootstrap the per-repo harness — `docs/CONTEXT.md`, `CODING_STANDARDS.md`, `docs/CODE_REVIEW.md`, `AGENTS.md`, `docs/adr/`, `.looper/PROMPT_BUILD.md`, helper scripts, optional `prek.toml`. |
 
 ### Pre-coding alignment & artifacts
 
 | Skill | One-liner |
 |---|---|
 | `grill-me` | Stress-test a plan or design through relentless interview until shared understanding. |
-| `grill-with-docs` | Grill against the existing domain model and update `CONTEXT.md` + ADRs inline as decisions crystallise. |
+| `grill-with-docs` | Grill against the existing domain model and update `docs/CONTEXT.md` + ADRs inline as decisions crystallise. |
 | `to-prd` | Synthesize current conversation context into a PRD and publish it as a GitHub issue (labelled `ready-for-agent`). |
 | `to-issues` | Break a PRD into independently-grabbable GitHub sub-issues using tracer-bullet vertical slices. |
 | `triage` | Move externally-sourced GitHub issues through the `bug`/`enhancement` × `needs-triage`/`needs-info`/`ready-for-agent`/`ready-for-human`/`wontfix` state machine. |
@@ -99,14 +99,14 @@ Side-channels:
 |---|---|
 | `tdd` | Red-green-refactor loop with vertical slices. **HITL only** — references `CODING_STANDARDS.md`; AFK loops read that file directly instead. |
 | `diagnose` | Disciplined diagnosis loop for hard bugs and performance regressions: reproduce → minimise → hypothesise → instrument → fix → regression-test. |
-| `improve-codebase-architecture` | Find deepening opportunities in a codebase, informed by `CONTEXT.md` and ADRs. |
+| `improve-codebase-architecture` | Find deepening opportunities in a codebase, informed by `docs/CONTEXT.md` and ADRs. |
 | `zoom-out` | Step out of the local view and give broader context / higher-level perspective on the current code. |
 
 ### Code review
 
 | Skill | One-liner |
 |---|---|
-| `code-review` | Review a pull request against the repo's `CODE_REVIEW.md` doctrine and post the review as a PR comment. |
+| `code-review` | Review a pull request against the repo's `docs/CODE_REVIEW.md` doctrine and post the review as a PR comment. |
 | `fix-code-review` | Fetch review comments, apply fixes, validate, commit, and push — runs end-to-end without manual gates. |
 
 ### Meta

@@ -52,7 +52,7 @@ PR status labels are shared GitHub labels, but represent pull request review sta
 - `changes-requested` — review found required changes.
 - `ready-to-merge` — review accepted the PR and it can be merged.
 
-Keep exactly one PR status label on each open PR. Maintainers and agents can filter pull requests by these labels in GitHub or with `gh pr list --search "label:<label>"`.
+Keep exactly one PR status label on each open PR. Maintainers and agents can filter pull requests by these labels in GitHub or with `gh pr list --search "label:<label>"`. Run `./scripts/ensure_pr_status_labels` to create or repair the shared labels.
 
 ### AFK loop
 

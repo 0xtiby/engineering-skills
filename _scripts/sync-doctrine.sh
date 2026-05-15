@@ -6,7 +6,9 @@
 #
 # Derived artifacts:
 #   1. tdd/{tests,mocking,interface-design,deep-modules,refactoring}.md  (verbatim copies)
-#   2. _templates/CODING_STANDARDS.md  (assembled from _doctrine/*.md)
+#   2. code-review/CODE_REVIEW.md  (verbatim copy)
+#   3. _templates/CODING_STANDARDS.md  (assembled from _doctrine/*.md)
+#   4. _templates/CODE_REVIEW.md  (verbatim copy)
 
 set -euo pipefail
 

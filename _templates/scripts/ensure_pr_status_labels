@@ -1,0 +1,28 @@
+#!/usr/bin/env bash
+# Create or update the GitHub labels used as pull-request review states.
+# Usage: ensure_pr_status_labels [owner/repo]
+
+set -euo pipefail
+
+repo="${1:-}"
+if [ -z "$repo" ]; then
+  repo="$(gh repo view --json owner,name -q '.owner.login + "/" + .name')"
+fi
+
+ensure_label() {
+  local name="$1" description="$2" color="$3"
+  gh label create "$name" \
+    --repo "$repo" \
+    --description "$description" \
+    --color "$color" 2>/dev/null \
+    || gh label edit "$name" \
+      --repo "$repo" \
+      --description "$description" \
+      --color "$color"
+}
+
+ensure_label "needs-review" "PR status: ready and waiting for review" "5319E7"
+ensure_label "changes-requested" "PR status: reviewed and requires changes before merge" "D73A4A"
+ensure_label "ready-to-merge" "PR status: reviewed and ready to merge" "0E8A16"
+
+echo "✓ PR status labels ensured for $repo"

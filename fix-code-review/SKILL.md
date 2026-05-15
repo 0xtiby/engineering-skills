@@ -143,9 +143,14 @@ git push origin HEAD
 GitHub labels are shared between issues and PRs, but these labels represent PR review state only. After pushing fixes, keep only `needs-review` active so maintainers can filter PRs waiting for another review:
 
 ```bash
-gh label create needs-review --repo <owner/repo> --description "PR status: ready and waiting for review" --color 5319E7 2>/dev/null || true
-gh label create changes-requested --repo <owner/repo> --description "PR status: reviewed and requires changes before merge" --color D73A4A 2>/dev/null || true
-gh label create ready-to-merge --repo <owner/repo> --description "PR status: reviewed and ready to merge" --color 0E8A16 2>/dev/null || true
+# Harnessed repos provide the shared label setup script.
+if [ -x ./scripts/ensure_pr_status_labels ]; then
+  ./scripts/ensure_pr_status_labels <owner/repo>
+else
+  gh label create needs-review --repo <owner/repo> --description "PR status: ready and waiting for review" --color 5319E7 2>/dev/null || true
+  gh label create changes-requested --repo <owner/repo> --description "PR status: reviewed and requires changes before merge" --color D73A4A 2>/dev/null || true
+  gh label create ready-to-merge --repo <owner/repo> --description "PR status: reviewed and ready to merge" --color 0E8A16 2>/dev/null || true
+fi
 
 gh pr edit <pr-number> --repo <owner/repo> \
   --remove-label changes-requested \
