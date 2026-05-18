@@ -17,15 +17,15 @@ This directory holds the canonical engineering doctrine for the personal harness
 `_scripts/sync-doctrine.sh` regenerates four artifacts from these files:
 
 1. **`tdd/{tests,mocking,interface-design,deep-modules,refactoring}.md`** — direct copies into the `tdd` skill bundle (fallback when no repo `CODING_STANDARDS.md` exists).
-2. **`code-review/CODE_REVIEW.md`** — direct copy into the `code-review` skill bundle (fallback when no repo `CODE_REVIEW.md` exists).
+2. **`code-review/CODE_REVIEW.md`** — direct copy into the `code-review` skill bundle (fallback when no repo `docs/CODE_REVIEW.md` or legacy root `CODE_REVIEW.md` exists).
 3. **`_templates/CODING_STANDARDS.md`** — concatenation in this order: `tdd.md` → `tests.md` → `mocking.md` → `interface-design.md` → `deep-modules.md` → `refactoring.md`, joined with `\n---\n` separators and a top-level frontmatter header. Written into target repos by `/setup-harness`.
-4. **`_templates/CODE_REVIEW.md`** — direct copy of `code-review.md`. Written into target repos by `/setup-harness`.
+4. **`_templates/CODE_REVIEW.md`** — direct copy of `code-review.md`. Written into target repos as `docs/CODE_REVIEW.md` by `/setup-harness`.
 
 CI / pre-commit runs `sync-doctrine.sh --check` to fail if copies have drifted.
 
 ## Editing rule
 
-**Always edit files in `_doctrine/` first**, then run `sync-doctrine.sh` to regenerate the derived copies. Never edit `tdd/<sidecar>.md`, `code-review/CODE_REVIEW.md`, or anything in `_templates/` directly — those edits will be lost on the next sync.
+**Always edit files in `_doctrine/` first**, then run `sync-doctrine.sh` to regenerate the derived doctrine copies. Never edit `tdd/<sidecar>.md`, `code-review/CODE_REVIEW.md`, `_templates/CODING_STANDARDS.md`, or `_templates/CODE_REVIEW.md` directly — those edits will be lost on the next sync.
 
 ## Provenance
 

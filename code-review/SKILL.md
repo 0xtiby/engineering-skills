@@ -60,9 +60,14 @@ If no URL is provided, ask the user for one.
 
 8. **Update the PR status label** after posting the review:
    ```bash
-   gh label create needs-review --repo <owner/repo> --description "PR status: ready and waiting for review" --color 5319E7 2>/dev/null || true
-   gh label create changes-requested --repo <owner/repo> --description "PR status: reviewed and requires changes before merge" --color D73A4A 2>/dev/null || true
-   gh label create ready-to-merge --repo <owner/repo> --description "PR status: reviewed and ready to merge" --color 0E8A16 2>/dev/null || true
+   # Harnessed repos provide the shared label setup script.
+   if [ -x ./scripts/ensure_pr_status_labels ]; then
+     ./scripts/ensure_pr_status_labels <owner/repo>
+   else
+     gh label create needs-review --repo <owner/repo> --description "PR status: ready and waiting for review" --color 5319E7 2>/dev/null || true
+     gh label create changes-requested --repo <owner/repo> --description "PR status: reviewed and requires changes before merge" --color D73A4A 2>/dev/null || true
+     gh label create ready-to-merge --repo <owner/repo> --description "PR status: reviewed and ready to merge" --color 0E8A16 2>/dev/null || true
+   fi
 
    # If changes are required:
    gh pr edit <PR_URL> --remove-label needs-review --remove-label ready-to-merge --add-label changes-requested

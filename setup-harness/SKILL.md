@@ -1,6 +1,6 @@
 ---
 name: setup-harness
-description: Bootstrap the personal project harness in a fresh git repo. Writes the per-repo doc set (CODING_STANDARDS.md, AGENTS.md at root; CONTEXT.md, CODE_REVIEW.md and ADRs under docs/) and the looper build prompt (.looper/PROMPT_BUILD.md). Run once after `/repo-create`. Re-running edits in place. Use when user wants to set up the harness, configure looper for a new repo, or scaffold AGENTS/CODING_STANDARDS files.
+description: Bootstrap the personal project harness in a fresh git repo. Writes the per-repo doc set (CODING_STANDARDS.md and AGENTS.md at root; docs/CONTEXT.md, docs/CODE_REVIEW.md, and ADRs under docs/) and the looper build prompt (.looper/PROMPT_BUILD.md). Run once after `/repo-create`. Re-running edits in place. Use when user wants to set up the harness, configure looper for a new repo, or scaffold AGENTS/CODING_STANDARDS files.
 disable-model-invocation: true
 ---
 
@@ -16,7 +16,7 @@ Look at the current repo to understand its starting state. Don't assume; read wh
 
 - `git remote -v` — confirm GitHub remote (this skill is GitHub-only).
 - `AGENTS.md`, `CLAUDE.md` at the repo root — does either exist?
-- `CODING_STANDARDS.md`, `docs/CONTEXT.md`, `docs/CODE_REVIEW.md`, `docs/adr/`, `.looper/`, `scripts/run_silent`, `prek.toml` — present already?
+- `CODING_STANDARDS.md`, `docs/CONTEXT.md`, `docs/CODE_REVIEW.md`, `docs/adr/`, `.looper/`, `scripts/run_silent`, `scripts/ensure_pr_status_labels`, `prek.toml` — present already?
 - `package.json` — infer package manager (`packageManager` field) and Node version (`engines.node`).
 
 If a non-GitHub remote is detected, stop and tell the user this skill is GitHub-only.
@@ -112,16 +112,12 @@ Write order:
 6. `.looper/config.json` (skip if exists; offer to merge `vars`).
 7. `.looper/PROMPT_BUILD.md` (skip if exists).
 8. `scripts/run_silent` (chmod +x). Skip if exists.
-9. `prek.toml` (only if Q5 = yes; skip if exists).
-10. `.gitignore` — read `_templates/.gitignore.fragment` and append **only the lines** that aren't already present in the repo's `.gitignore` (per-line dedup, ignoring comments and blank lines as the matching key). Don't append the fragment as a whole if any of its lines are missing — diff line-by-line. If `.gitignore` doesn't exist, create it with the full fragment.
-11. GitHub PR status labels — create or update the repository labels used by the PR lifecycle. GitHub labels are shared between issues and PRs, but these three represent PR review state only:
+9. `scripts/ensure_pr_status_labels` (chmod +x). Skip if exists.
+10. `prek.toml` (only if Q5 = yes; skip if exists).
+11. `.gitignore` — read `_templates/.gitignore.fragment` and append **only the lines** that aren't already present in the repo's `.gitignore` (per-line dedup, ignoring comments and blank lines as the matching key). Don't append the fragment as a whole if any of its lines are missing — diff line-by-line. If `.gitignore` doesn't exist, create it with the full fragment.
+12. GitHub PR status labels — create or update the repository labels used by the PR lifecycle. GitHub labels are shared between issues and PRs, but these three represent PR review state only:
     ```bash
-    gh label create needs-review --description "PR status: ready and waiting for review" --color 5319E7 2>/dev/null \
-      || gh label edit needs-review --description "PR status: ready and waiting for review" --color 5319E7
-    gh label create changes-requested --description "PR status: reviewed and requires changes before merge" --color D73A4A 2>/dev/null \
-      || gh label edit changes-requested --description "PR status: reviewed and requires changes before merge" --color D73A4A
-    gh label create ready-to-merge --description "PR status: reviewed and ready to merge" --color 0E8A16 2>/dev/null \
-      || gh label edit ready-to-merge --description "PR status: reviewed and ready to merge" --color 0E8A16
+    ./scripts/ensure_pr_status_labels
     ```
 
 **File selection rule for AGENTS.md / CLAUDE.md:**
@@ -160,6 +156,7 @@ setup-harness/
     ├── .looper/config.json
     ├── .looper/PROMPT_BUILD.md
     ├── scripts/run_silent
+    ├── scripts/ensure_pr_status_labels
     ├── prek.toml
     └── .gitignore.fragment
 ```

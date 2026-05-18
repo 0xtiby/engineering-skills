@@ -3,18 +3,9 @@
 Date: YYYY-MM-DD
 Status: Proposed | Accepted | Superseded by NNNN | Deprecated
 
-## Context
+{1-3 sentences: what's the context, what did we decide, and why.}
 
-What problem are we solving? What constraints apply? What did we explore?
-
-## Decision
-
-The choice we made. State it in one sentence first, then expand.
-
-## Consequences
-
-What changes because of this decision? What becomes easier? What becomes harder? What can we no longer do?
-
-## Alternatives considered
-
-Briefly list the options we rejected and why.
+<!--
+Keep ADRs short by default. Add optional sections only when they add genuine
+value: Considered Options, Consequences, or Supersedes/Superseded By.
+-->
